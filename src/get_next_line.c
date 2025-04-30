@@ -1,5 +1,46 @@
 #include "get_next_line.h"
 
+int		ft_endl(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != 0 && str[i] != '\n')
+		i++;
+	if (str[i] == '\n')
+		return (1);
+	return (0);
+}
+
+char	*new_line(char *buffer)
+{
+	int		i;
+	int		j;
+	char	*res;
+
+	i = 0;
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	if (!buffer[i])
+	{
+		free(buffer);
+		return (NULL);
+	}
+	res = malloc(sizeof(char) * (ft_strlen(buffer) - i + 1));
+	if (!res)
+	{
+		free(res);
+		return (NULL);
+	}
+	i++;
+	j = 0;
+	while (buffer[i])
+		res[j++] = buffer[i++];
+	res[j] = 0;
+	free(buffer);
+	return (res);
+}
+
 char	*read_line(char *buffer)
 {
 	int		i;
@@ -10,9 +51,14 @@ char	*read_line(char *buffer)
 		return (NULL);
 	while (buffer[i] != '\n' && buffer[i] != 0)
 		i++;
-	res = ft_substr(buffer, 0, i);
-	if (!res)
+	if (i == 0)
 		return (NULL);
+	res = ft_substr(buffer, 0, i + ft_endl(buffer));
+	if (!res)
+	{
+		free(res);
+		return (NULL);
+	}
 	return (res);
 }
 
@@ -56,5 +102,6 @@ char	*get_next_line(int fd)
 	if (!buffer[fd])
 		return (NULL);
 	line = read_line(buffer[fd]);
+	buffer[fd] = new_line(buffer[fd]);
 	return (line);
 }
