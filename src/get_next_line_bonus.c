@@ -1,99 +1,108 @@
 #include "get_next_line.h"
 
-char	*ft_strchr(const char *s, int c)
+int		ft_endl(char *str)
 {
 	int	i;
 
-	if (!s)
-		return NULL;
-	if (c == 0)
-		return ((char *)&(s[ft_strlen(s)]));
 	i = 0;
-	while (s[i])
-	{
-		if (s[i] == c)
-			return ((char *)&(s[i]));
+	while (str[i] != 0 && str[i] != '\n')
 		i++;
-	}
-	return (NULL);
+	if (str[i] == '\n')
+		return (1);
+	return (0);
 }
 
-char *ft_strjoin(char const *s1, char const *s2)
+char	*new_line(char *buffer)
 {
-	int		len_s1;
-	int		len_s2;
-	int		counter;
-	char	*dest;
-
-	if (!s1)
-		len_s1 = 0;
-	len_s1 = (int)ft_strlen(s1);
-	len_s2 = (int)ft_strlen(s2);
-	dest = malloc((len_s1 + len_s2 + 1) * sizeof(char));
-	counter = 0;
-	if (!dest)
-		return NULL;
-	while (counter < len_s1)
-	{
-		dest[counter] = s1[counter];
-		counter++;
-	}
-	counter = 0;
-	while (counter < len_s2)
-	{
-		dest[counter + len_s1] = s2[counter];
-		counter++;
-	}
-	dest[counter + len_s1] = 0;
-	return (dest);
-}
-
-char *ft_substr(char const *s, unsigned int start, size_t len)
-{
-	unsigned long	i;
-	char			*dest;
+	int		i;
+	int		j;
+	char	*res;
 
 	i = 0;
-	dest = malloc((len+1)*sizeof(char));
-	if (!dest)
-		return NULL;
-	while (i < (len) && s[i + start])
-	{
-		dest[i] = s[i + start];
+	while (buffer[i] && buffer[i] != '\n')
 		i++;
+	if (!buffer[i])
+	{
+		free(buffer);
+		return (NULL);
 	}
-	dest[i] = 0;
-	return (dest);
+	res = malloc(sizeof(char) * (ft_strlen(buffer) - i + 1));
+	if (!res)
+	{
+		free(res);
+		return (NULL);
+	}
+	i++;
+	j = 0;
+	while (buffer[i])
+		res[j++] = buffer[i++];
+	res[j] = 0;
+	free(buffer);
+	return (res);
 }
 
-size_t ft_strlen(const char *s)
+char	*read_line(char *buffer)
 {
-	unsigned long	i;
+	int		i;
+	char	*res;
 
 	i = 0;
-	if (!s)
-		return (0);
-	while (s[i])
+	if (!buffer)
+		return (NULL);
+	while (buffer[i] != '\n' && buffer[i] != 0)
 		i++;
-	return (i);
+	if (i == 0)
+		return (NULL);
+	res = ft_substr(buffer, 0, i + ft_endl(buffer));
+	printf("This is the string: \"%s\"", res);
+	if (!res)
+	{
+		free(res);
+		return (NULL);
+	}
+	return (res);
 }
 
-char	*ft_strdup(const char *s)
+char	*read_buffer(int fd, char *buffer)
 {
-	int		len;
-	int		counter;
-	char	*dest;
+	char	*str;
+	int		bytes;
 
-	len = (int)ft_strlen(s);
-	dest = malloc((len + 1) * sizeof(char));
-	counter = 0;
-	if (!dest)
-		return NULL;
-	while (counter < len)
+	str = malloc((BUFFER_SIZE + 1)* sizeof(char));
+	if (!str)
 	{
-		dest[counter] = s[counter];
-		counter++;
+		free(str);
+		return (NULL);
 	}
-	dest[counter] = 0;
-	return (dest);
+	bytes = 1;
+	while (!ft_strchr(buffer, '\n') && bytes != 0)
+	{
+		bytes = read(fd, str, BUFFER_SIZE);
+		if (bytes < 0)
+		{
+			free(str);
+			return (NULL);
+		}
+		str[bytes] = 0;
+		buffer = ft_strjoin(buffer, str);
+	}
+	free(str);
+	return (buffer);
+}
+
+char	*get_next_line(int fd)
+{
+	char		*line;
+	static char	*buffer[FD_MAX];
+
+	if (fd < 0 || fd >= FD_MAX ||BUFFER_SIZE <= 0)
+		return (NULL);
+	if (buffer[fd] == NULL)
+		buffer[fd] = ft_strdup("");
+	buffer[fd] = read_buffer(fd, buffer[fd]);
+	if (!buffer[fd])
+		return (NULL);
+	line = read_line(buffer[fd]);
+	buffer[fd] = new_line(buffer[fd]);
+	return (line);
 }

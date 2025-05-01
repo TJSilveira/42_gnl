@@ -4,23 +4,24 @@ CC = gcc
 
 CFLAGS = -Wall -Werror -Wextra
 
+# Directories
 SRC_DIR = ./src/
 SRC_DIR_BONUS = ./src_bonus/
 OBJS_DIR = ./objs/
 
-#BUILD_DIR = ./build/
-
+# Source File names
 SRC_FILES = get_next_line.c \
 			get_next_line_utils.c
 
 BONUS_FILES = get_next_line_bonus.c \
 			get_next_line_utils_bonus.c
 
+# Source File paths
 SRC_TEST = $(addprefix $(SRC_DIR),test.c)
 SRC = $(addprefix $(SRC_DIR),$(SRC_FILES))
 SRC_BONUS = $(addprefix $(SRC_DIR_BONUS),$(BONUS_FILES))
 
-INCLUDES = -I ./includes/
+INCLUDES = -I ./includes/ -D BUFFER_SIZE=200 -D STDIN
 
 #Object files
 OBJS_FILES = $(SRC_FILES:.c=.o)
@@ -48,16 +49,18 @@ test: $(OBJS_DIR) ${OBJS} ${OBJS_TEST}
 test_bonus: $(OBJS_DIR) ${OBJS_BONUS} ${OBJS_TEST}
 	${CC} ${CFLAGS} ${OBJS_BONUS} ${OBJS_TEST} -o test
 
+# Creating object files for normal run
 $(OBJS_DIR)%.o: $(SRC_DIR)%.c
 	${CC} ${CFLAGS} -c ${INCLUDES} $< -o $@
 
+# Creating object files for bonus run
 $(OBJS_DIR)%.o: $(SRC_DIR_BONUS)%.c
 	${CC} ${CFLAGS} -c ${INCLUDES} $< -o $@
 
 $(OBJS_DIR)%.o: $(SRC_TEST)
 	${CC} ${CFLAGS} -c ${INCLUDES} $< -o $@
 
-valgrind: $(test)
+valgrind: test
 	G_SLICE=always-malloc G_DEBUG=gc-friendly  valgrind -v --tool=memcheck --leak-check=full --num-callers=40 --log-file=valgrind.log test
 
 clean:

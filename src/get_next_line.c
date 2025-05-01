@@ -92,16 +92,16 @@ char	*read_buffer(int fd, char *buffer)
 char	*get_next_line(int fd)
 {
 	char		*line;
-	static char	*buffer[FD_MAX];
+	static char	*buffer;
 
-	if (fd < 0 || fd > FD_MAX ||BUFFER_SIZE <= 0)
+	if (fd < 0 || fd >= FD_MAX ||BUFFER_SIZE <= 0)
 		return (NULL);
-	if (buffer[fd] == NULL)
-		buffer[fd] = ft_strdup("");
-	buffer[fd] = read_buffer(fd, buffer[fd]);
-	if (!buffer[fd])
+	if (buffer == NULL)
+		buffer = ft_strdup("");
+	buffer = read_buffer(fd, buffer);
+	if (!buffer)
 		return (NULL);
-	line = read_line(buffer[fd]);
-	buffer[fd] = new_line(buffer[fd]);
+	line = read_line(buffer);
+	buffer = new_line(buffer);
 	return (line);
 }
