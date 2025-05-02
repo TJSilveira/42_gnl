@@ -1,17 +1,5 @@
 #include "get_next_line.h"
 
-int		ft_endl(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != 0 && str[i] != '\n')
-		i++;
-	if (str[i] == '\n')
-		return (1);
-	return (0);
-}
-
 char	*new_line(char *buffer)
 {
 	int		i;
@@ -53,7 +41,7 @@ char	*read_line(char *buffer)
 		i++;
 	if (i == 0)
 		return (NULL);
-	res = ft_substr(buffer, 0, i + ft_endl(buffer));
+	res = ft_substr(buffer, 0, i + (buffer[i] == '\n'));
 	if (!res)
 	{
 		free(res);
