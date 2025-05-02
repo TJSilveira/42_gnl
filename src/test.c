@@ -4,7 +4,6 @@ void	stdin_opt()
 {
 	char	*line;
 	
-	printf("\nSTDIN test\n\n");
 	while ((line = get_next_line(0)))
 	{
 		printf("%s", line);

@@ -39,7 +39,7 @@ char	*read_line(char *buffer)
 		return (NULL);
 	while (buffer[i] != '\n' && buffer[i] != 0)
 		i++;
-	if (i == 0)
+	if (i == 0 && buffer[i] == 0)
 		return (NULL);
 	res = ft_substr(buffer, 0, i + (buffer[i] == '\n'));
 	if (!res)

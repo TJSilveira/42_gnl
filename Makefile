@@ -21,7 +21,7 @@ SRC_TEST = $(addprefix $(SRC_DIR),test.c)
 SRC = $(addprefix $(SRC_DIR),$(SRC_FILES))
 SRC_BONUS = $(addprefix $(SRC_DIR_BONUS),$(BONUS_FILES))
 
-INCLUDES = -I ./includes/ -D BUFFER_SIZE=200 -D NORMAL
+INCLUDES = -I ./includes/ -D BUFFER_SIZE=200 -D STDIN
 
 #Object files
 OBJS_FILES = $(SRC_FILES:.c=.o)

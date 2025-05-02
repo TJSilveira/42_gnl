@@ -39,10 +39,9 @@ char	*read_line(char *buffer)
 		return (NULL);
 	while (buffer[i] != '\n' && buffer[i] != 0)
 		i++;
-	if (i == 0)
+	if (i == 0 && buffer[i] == 0)
 		return (NULL);
 	res = ft_substr(buffer, 0, i + (buffer[i] == '\n'));
-	printf("This is the string: \"%s\"", res);
 	if (!res)
 	{
 		free(res);
