@@ -5,15 +5,15 @@
 # include <stdio.h>
 # include <fcntl.h>
 
-# ifndef FD_MAX
-#  define FD_MAX 512
-# endif
-
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1024
 # endif
 
-char *get_next_line(int fd);
+/* Get Next line functions */
+char	*get_next_line(int fd);
+char	*new_line(char *buffer);
+char	*read_line(char *buffer);
+char	*read_buffer(int fd, char *buffer);
 
 /* Util functions */
 char	*ft_strchr(const char *s, int c);

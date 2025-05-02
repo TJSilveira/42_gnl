@@ -82,7 +82,7 @@ char	*get_next_line(int fd)
 	char		*line;
 	static char	*buffer;
 
-	if (fd < 0 || fd >= FD_MAX ||BUFFER_SIZE <= 0)
+	if (fd < 0 ||BUFFER_SIZE <= 0)
 		return (NULL);
 	if (buffer == NULL)
 		buffer = ft_strdup("");
