@@ -55,7 +55,7 @@ char	*read_buffer(int fd, char *buffer)
 	char	*str;
 	int		bytes;
 
-	str = malloc((BUFFER_SIZE + 1)* sizeof(char));
+	str = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!str)
 	{
 		free(str);
@@ -82,7 +82,7 @@ char	*get_next_line(int fd)
 	char		*line;
 	static char	*buffer[FD_MAX];
 
-	if (fd < 0 || fd >= FD_MAX ||BUFFER_SIZE <= 0)
+	if (fd < 0 || fd >= FD_MAX || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (buffer[fd] == NULL)
 		buffer[fd] = ft_strdup("");

@@ -5,7 +5,7 @@ char	*ft_strchr(const char *s, int c)
 	int	i;
 
 	if (!s)
-		return NULL;
+		return (NULL);
 	if (c == 0)
 		return ((char *)&(s[ft_strlen(s)]));
 	i = 0;
@@ -18,7 +18,7 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-char *ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
 	int		len_s1;
 	int		len_s2;
@@ -30,33 +30,27 @@ char *ft_strjoin(char const *s1, char const *s2)
 	len_s1 = (int)ft_strlen(s1);
 	len_s2 = (int)ft_strlen(s2);
 	dest = malloc((len_s1 + len_s2 + 1) * sizeof(char));
-	counter = 0;
+	counter = -1;
 	if (!dest)
-		return NULL;
-	while (counter < len_s1)
-	{
+		return (NULL);
+	while (++counter < len_s1)
 		dest[counter] = s1[counter];
-		counter++;
-	}
-	counter = 0;
-	while (counter < len_s2)
-	{
+	counter = -1;
+	while (++counter < len_s2)
 		dest[counter + len_s1] = s2[counter];
-		counter++;
-	}
 	dest[counter + len_s1] = 0;
 	return (dest);
 }
 
-char *ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	unsigned long	i;
 	char			*dest;
 
 	i = 0;
-	dest = malloc((len+1)*sizeof(char));
+	dest = malloc((len + 1) * sizeof(char));
 	if (!dest)
-		return NULL;
+		return (NULL);
 	while (i < (len) && s[i + start])
 	{
 		dest[i] = s[i + start];
@@ -66,7 +60,7 @@ char *ft_substr(char const *s, unsigned int start, size_t len)
 	return (dest);
 }
 
-size_t ft_strlen(const char *s)
+size_t	ft_strlen(const char *s)
 {
 	unsigned long	i;
 
@@ -88,7 +82,7 @@ char	*ft_strdup(const char *s)
 	dest = malloc((len + 1) * sizeof(char));
 	counter = 0;
 	if (!dest)
-		return NULL;
+		return (NULL);
 	while (counter < len)
 	{
 		dest[counter] = s[counter];

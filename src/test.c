@@ -1,9 +1,9 @@
 #include "get_next_line.h"
 
-void	stdin_opt()
+void	stdin_opt(void)
 {
 	char	*line;
-	
+
 	while ((line = get_next_line(0)))
 	{
 		printf("%s", line);
@@ -11,14 +11,14 @@ void	stdin_opt()
 }
 
 #ifdef NORMAL
-int	main()
+int	main(void)
 {
 	int		fd;
 	char	*line;
 	int		i;
 
 	i = 0;
-	fd = open("./tests/test1",O_RDONLY);
+	fd = open("./tests/test1", O_RDONLY);
 	line = get_next_line(fd);
 	if (fd == -1)
 	{
@@ -33,7 +33,7 @@ int	main()
 	printf("\n%i\n", i);
 	close(fd);
 	i = 0;
-	fd = open("./tests/test2.txt",O_RDONLY);
+	fd = open("./tests/test2.txt", O_RDONLY);
 	line = get_next_line(fd);
 	if (fd == -1)
 	{
@@ -48,7 +48,7 @@ int	main()
 	printf("\n%i\n", i);
 	close(fd);
 	i = 0;
-	fd = open("./tests/test3.txt",O_RDONLY);
+	fd = open("./tests/test3.txt", O_RDONLY);
 	line = get_next_line(fd);
 	if (fd == -1)
 	{
@@ -66,7 +66,7 @@ int	main()
 #endif
 
 #ifdef STDIN
-int	main()
+int	main(void)
 {
 	stdin_opt();
 }
