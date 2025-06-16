@@ -53,6 +53,7 @@ char	*read_line(char *buffer)
 char	*read_buffer(int fd, char *buffer)
 {
 	char	*str;
+	char	*temp;
 	int		bytes;
 
 	str = malloc((BUFFER_SIZE + 1) * sizeof(char));
@@ -71,7 +72,9 @@ char	*read_buffer(int fd, char *buffer)
 			return (NULL);
 		}
 		str[bytes] = 0;
+		temp = buffer;
 		buffer = ft_strjoin(buffer, str);
+		free(temp);
 	}
 	free(str);
 	return (buffer);

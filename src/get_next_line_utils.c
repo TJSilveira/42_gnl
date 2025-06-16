@@ -27,16 +27,17 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	if (!s1)
 		len_s1 = 0;
-	len_s1 = (int)ft_strlen(s1);
+	else
+		len_s1 = (int)ft_strlen(s1);
 	len_s2 = (int)ft_strlen(s2);
 	dest = malloc((len_s1 + len_s2 + 1) * sizeof(char));
 	counter = -1;
 	if (!dest)
 		return (NULL);
-	while (++counter < len_s1)
+	while (++counter < len_s1 && s1)
 		dest[counter] = s1[counter];
 	counter = -1;
-	while (++counter < len_s2)
+	while (++counter < len_s2 && s2)
 		dest[counter + len_s1] = s2[counter];
 	dest[counter + len_s1] = 0;
 	return (dest);
