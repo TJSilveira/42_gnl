@@ -69,12 +69,18 @@ char	*read_buffer(int fd, char *buffer)
 		if (bytes < 0)
 		{
 			free(str);
+			free(buffer);
 			return (NULL);
 		}
 		str[bytes] = 0;
 		temp = buffer;
 		buffer = ft_strjoin(buffer, str);
 		free(temp);
+		if (!buffer)
+		{
+			free(str);
+			return (NULL);
+		}
 	}
 	free(str);
 	return (buffer);
@@ -91,7 +97,10 @@ char	*get_next_line(int fd)
 		buffer = ft_strdup("");
 	buffer = read_buffer(fd, buffer);
 	if (!buffer)
+	{
+		free(buffer);
 		return (NULL);
+	}
 	line = read_line(buffer);
 	buffer = new_line(buffer);
 	return (line);
