@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tsilveir <tsilveir@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/17 10:49:35 by tsilveir          #+#    #+#             */
+/*   Updated: 2025/06/17 10:49:37 by tsilveir         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line_bonus.h"
 
 char	*new_line(char *buffer)
@@ -50,11 +62,37 @@ char	*read_line(char *buffer)
 	return (res);
 }
 
+int	read_buffer_loop(int fd, char **buffer, char **str)
+{
+	char	*temp;
+	int		bytes;
+
+	bytes = 1;
+	while (!ft_strchr(*buffer, '\n') && bytes != 0)
+	{
+		bytes = read(fd, *str, BUFFER_SIZE);
+		if (bytes < 0)
+		{
+			free(*str);
+			free(*buffer);
+			return (1);
+		}
+		(*str)[bytes] = 0;
+		temp = *buffer;
+		*buffer = ft_strjoin(*buffer, *str);
+		free(temp);
+		if (!(*buffer))
+		{
+			free(*str);
+			return (1);
+		}
+	}
+	return (0);
+}
+
 char	*read_buffer(int fd, char *buffer)
 {
 	char	*str;
-	char	*temp;
-	int		bytes;
 
 	str = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!str)
@@ -62,26 +100,8 @@ char	*read_buffer(int fd, char *buffer)
 		free(str);
 		return (NULL);
 	}
-	bytes = 1;
-	while (!ft_strchr(buffer, '\n') && bytes != 0)
-	{
-		bytes = read(fd, str, BUFFER_SIZE);
-		if (bytes < 0)
-		{
-			free(str);
-			free(buffer);
-			return (NULL);
-		}
-		str[bytes] = 0;
-		temp = buffer;
-		buffer = ft_strjoin(buffer, str);
-		free(temp);
-		if (!buffer)
-		{
-			free(str);
-			return (NULL);
-		}
-	}
+	if (read_buffer_loop(fd, &buffer, &str))
+		return (NULL);
 	free(str);
 	return (buffer);
 }
