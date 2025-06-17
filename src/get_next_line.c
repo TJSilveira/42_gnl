@@ -113,7 +113,7 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (buffer == NULL)
+	if (!buffer)
 		buffer = ft_strdup("");
 	buffer = read_buffer(fd, buffer);
 	if (!buffer)
