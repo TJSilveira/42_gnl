@@ -57,11 +57,11 @@ $(OBJS_DIR)%.o: $(SRC_DIR)%.c
 $(OBJS_DIR)%.o: $(SRC_DIR_BONUS)%.c
 	${CC} ${CFLAGS} -c ${INCLUDES} $< -o $@
 
-$(OBJS_DIR)%.o: $(SRC_TEST)
+$(OBJS_TEST): $(SRC_TEST)
 	${CC} ${CFLAGS} -c ${INCLUDES} $< -o $@
 
 valgrind: test
-	G_SLICE=always-malloc G_DEBUG=gc-friendly  valgrind -v --tool=memcheck --leak-check=full --num-callers=40 --log-file=valgrind.log test
+	G_SLICE=always-malloc G_DEBUG=gc-friendly  valgrind -v --tool=memcheck --leak-check=full --num-callers=40 --log-file=valgrind.log ./test
 
 clean:
 	rm -rf ${OBJS_DIR}
